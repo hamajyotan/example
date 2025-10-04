@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users = Account.all.includes(:profile).map { User.new(it) }
   end
 
   # GET /users/1 or /users/1.json
@@ -60,7 +60,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params.expect(:id))
+      @user = User.find(Account.find(params.expect(:id)))
     end
 
     # Only allow a list of trusted parameters through.
