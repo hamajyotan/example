@@ -49,7 +49,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy!
+    UserDeactivation.new(@account).save!
 
     respond_to do |format|
       format.html { redirect_to users_path, notice: "User was successfully destroyed.", status: :see_other }
@@ -60,7 +60,8 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(Account.find(params.expect(:id)))
+      @account = Account.find(params.expect(:id))
+      @user = User.new(@account)
     end
 
     # Only allow a list of trusted parameters through.
